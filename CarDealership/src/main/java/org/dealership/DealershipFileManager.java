@@ -19,15 +19,15 @@ public class DealershipFileManager {
             // Use data to create Dealership object
             String[] dealershipString = vehicleString.split("\\|");
             Dealership dealership = new Dealership(dealershipString[0], dealershipString[1], dealershipString[2]);
-            System.out.println(dealership);
 
             // Populate the inventory with a list of Vehicles
-            while((vehicleString = vehicleReader.readLine()) !=null){
+            while ((vehicleString = vehicleReader.readLine()) != null) {
                 String[] vehicleData = vehicleString.split("\\|");
 
                 dealership.addVehicle(new Vehicle(Integer.parseInt(vehicleData[0]), Integer.parseInt(vehicleData[1]), vehicleData[2], vehicleData[3], vehicleData[4], vehicleData[5], Integer.parseInt(vehicleData[6]), Double.parseDouble(vehicleData[7])));
             }
-            return null;
+            System.out.println(dealership);
+            return dealership;
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -35,11 +35,7 @@ public class DealershipFileManager {
         }
     }
 
-    public void saveDealership(){
+    public void saveDealership() {
 
-    }
-
-    public static void main(String[] args) {
-        getDealership();
     }
 }
