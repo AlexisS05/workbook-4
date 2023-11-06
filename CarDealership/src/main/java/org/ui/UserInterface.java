@@ -53,4 +53,30 @@ public class UserInterface {
             );
         }
     }
+    private void processGetByPriceRequest() {
+        // enter Price
+        String minString = Utils.getStringInputCustom("Enter the min price: "); // Evaluate input to String for isEmpty
+        double minPrice = Utils.getDoubleInput(minString); // Evaluate if amount is Empty.
+
+        String maxString = Utils.getStringInputCustom("Enter the max price: "); // Evaluate input to String for isEmpty
+        double maxPrice = Utils.getDoubleInput(maxString); // Evaluate if amount is Empty.
+
+        // get Vehicle from Dealership
+        ArrayList<Vehicle> vehicles = dealership.getVehiclesByPrice(minPrice, maxPrice);
+        displayVehicles(vehicles);
+    }
+
+    private void processGetByMakeModelRequest() {
+        String make = Utils.getStringInput("Please enter a make: ");
+        String model = Utils.getStringInput("Please enter the model: ");
+
+        // get Vehicle from Dealership
+        ArrayList<Vehicle> vehicles = dealership.getVehiclesByMakeModel(make, model);
+
+        // loop through return vehicles
+        // print out each vehicle
+        for (Vehicle v : vehicles) {
+            System.out.println(v);
+        }
+    }
 }
