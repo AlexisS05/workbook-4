@@ -2,12 +2,11 @@ package org.dealership;
 
 import org.vehicle.Vehicle;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 public class DealershipFileManager {
+
+    private String fileName;
 
     public static Dealership getDealership() {
         // load and read file
@@ -35,7 +34,32 @@ public class DealershipFileManager {
         }
     }
 
-    public void saveDealership() {
+    public void saveDealershipToCSV(Dealership dealership) { // write dealership info, then vehicles
+        String dealerName = dealership.getName();
+        String address = dealership.getAddress();
+        String phone = dealership.getPhone();
+        String dealershipInfo = String.format("%s|%s|%s\n", address, dealerName, phone);
 
+        try (FileWriter fileWriter = new FileWriter("inventory.csv", false)) {
+            fileWriter.write(dealershipInfo);
+
+            for (Vehicle vehicle : dealership.getAllVehicles()) {
+                String vehicleInfo = String.format("%d|%d|%s|%s|%s|%s|%d|%.2f\n",
+                        vehicle.getVin(),
+                        vehicle.getYear(),
+                        vehicle.getMake(),
+                        vehicle.getModel(),
+                        vehicle.getVehicleType(),
+                        vehicle.getColor(),
+                        vehicle.getOdometer(),
+                        vehicle.getPrice());
+                fileWriter.write(vehicleInfo);
+            }
+            fileWriter.close();
+
+            System.out.println("Dealership inventory saved to file: " + fileName);
+        } catch (IOException e) {
+            System.err.println("Error saving dealership inventory");
+        }
     }
 }
