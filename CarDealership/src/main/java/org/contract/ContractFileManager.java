@@ -3,9 +3,7 @@ package org.contract;
 import org.dealership.Dealership;
 import org.dealership.DealershipFileManager;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.*;
 import java.util.ArrayList;
 
 public class ContractFileManager {
@@ -31,5 +29,21 @@ public class ContractFileManager {
             throw new RuntimeException(e);
         }
         return contracts;
+    }
+
+    public void saveContract(Contract contract) {
+        try {
+            FileWriter fileWriter = new FileWriter("contracts.csv", true);
+            BufferedWriter bufWriter = new BufferedWriter(fileWriter);
+
+            // Need to pass contract param
+
+            // bufWriter.append();
+            bufWriter.close();
+
+            System.out.println("Contract saved to file!");
+        } catch (IOException e) {
+            System.err.println("Error saving contract");
+        }
     }
 }
