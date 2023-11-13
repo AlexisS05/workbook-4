@@ -14,9 +14,8 @@ public class UserInterface {
 
     private void init() {
         // Create object
-        dealership = new Dealership();
+        dealership = DealershipFileManager.getDealership();
         dfm = new DealershipFileManager();
-
     }
 
     public void display() {
@@ -45,6 +44,10 @@ public class UserInterface {
                     break;
                 case '8':
                     addVehicleToCSV();
+                    break;
+                case '9':
+                    removeVehicleFromCSV();
+                    break;
             }
         }
     }
@@ -90,7 +93,7 @@ public class UserInterface {
 
     public void addVehicleToCSV() {
         System.out.println("Enter the vehicle details:");
-        int vin = Utils.getIntInput("VIN: " );
+        int vin = Utils.getIntInput("VIN: ");
         int year = Utils.getIntInput("Year: ");
         String make = Utils.getStringInput("Make: ");
         String model = Utils.getStringInput("Model: ");
@@ -104,5 +107,18 @@ public class UserInterface {
         Vehicle vehicle = new Vehicle(vin, year, make, model, vehicleType, color, odometer, price);
         dealership.addVehicle(vehicle);
         dfm.saveDealershipToCSV(dealership);
+    }
+
+    public void removeVehicleFromCSV() {
+        int vin = Utils.getIntInput("Enter the vin of the vehicle you would like to remove: ");
+        Vehicle vehicleToRemove = dealership.getVehiclesByVIN(vin);
+
+        if (vehicleToRemove != null) {
+            dealership.removeVehicle(vehicleToRemove);
+            dfm.saveDealershipToCSV(dealership);
+            System.out.println("Vehicle removed successfully!");
+        } else {
+            System.out.println("Vehicle not found!");
+        }
     }
 }
