@@ -5,22 +5,42 @@ import org.vehicle.Vehicle;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.dealership.DealershipFileManager.getDealership;
+
 public class Dealership {
     String name;
     String address;
     String phone;
-    ArrayList<Vehicle> inventory;
+    ArrayList<Vehicle> inventory = new ArrayList<>();
+    public Dealership() {
+    }
+
+
 
     public Dealership(String name, String address, String phone) {
         this.name = name;
         this.address = address;
         this.phone = phone;
-        inventory = new ArrayList<>();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPhone() {
+        return phone;
     }
 
     public ArrayList<Vehicle> getInventory() {
         return inventory;
     }
+
+
+
 
     public ArrayList<Vehicle> getVehiclesByPrice(double min, double max){
         ArrayList<Vehicle> inventoryWithinRange = new ArrayList<>();
@@ -86,8 +106,19 @@ public class Dealership {
         return inventoryWithinType;
     }
 
+    public Vehicle getVehiclesByVIN(int vin) {
+        for (Vehicle vehicle : inventory) {
+            if (vehicle.getVin() == vin) {
+                System.out.println("Found vehicle: " + vehicle);
+                return vehicle;
+            }
+        }
+        System.out.println("Vehicle not found");
+        return null;
+    }
+
     public ArrayList<Vehicle> getAllVehicles(){
-        return inventory;
+        return new ArrayList<>(inventory);
     }
 
     public void addVehicle(Vehicle vehicle){
