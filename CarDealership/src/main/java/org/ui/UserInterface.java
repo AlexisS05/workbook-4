@@ -186,7 +186,7 @@ public class UserInterface {
         String date = LocalDate.now().toString();
         int vin = Utils.getIntInput("Enter vehicle VIN: ");
         String customerName = Utils.getStringInput("Enter customer name: " );
-        String customerEmail = Utils.getStringInput("Enter customer email: ");
+        String customerEmail = Utils.getEmailInput("Enter customer email: ");
         String typeOfContract = Utils.getStringInput("Enter contract type (sell/lease): ");
 
         Vehicle findVehicle = dealership.getVehiclesByVIN(vin);
