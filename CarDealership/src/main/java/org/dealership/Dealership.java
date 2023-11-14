@@ -95,15 +95,14 @@ public class Dealership {
         return inventoryWithinRange;
     }
 
-    public ArrayList<Vehicle> getVehiclesByType(String type){
-        ArrayList<Vehicle> inventoryWithinType = new ArrayList<>();
-        String makeParsed = type.trim();
-        for(Vehicle vehicle: inventory){
-            if(vehicle.getColor().equalsIgnoreCase(type)){
-                inventoryWithinType.add(vehicle);
+    public ArrayList<Vehicle> getVehiclesByType(String vehicleType) {
+        ArrayList<Vehicle> result = new ArrayList<>();
+        for (Vehicle vehicle : inventory) {
+            if (vehicle.getVehicleType().equalsIgnoreCase(vehicleType)) {
+                result.add(vehicle);
             }
         }
-        return inventoryWithinType;
+        return result;
     }
 
     public Vehicle getVehiclesByVIN(int vin) {
