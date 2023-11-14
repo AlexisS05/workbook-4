@@ -27,7 +27,7 @@ public class SalesContract extends Contract {
 
     @Override
     public String getContractString() {
-        return String.format("SALE|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s \n",
+        return String.format("\nSALE|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s|%s",
                 getDate(),
                 getCustomerName(),
                 getCustomerEmail(),
