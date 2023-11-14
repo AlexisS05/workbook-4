@@ -1,21 +1,28 @@
 package org.ui;
 
+import org.contract.Contract;
+import org.contract.ContractFileManager;
+import org.contract.SalesContract;
 import org.dealership.Dealership;
 import org.dealership.DealershipFileManager;
 import org.utils.Utils;
 import org.vehicle.Vehicle;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 
 public class UserInterface {
     Dealership dealership = new Dealership();
     DealershipFileManager dfm;
+    ContractFileManager cfm;
 
     private void init() {
         // Create object
         dealership = DealershipFileManager.getDealership();
         dfm = new DealershipFileManager();
+        cfm = new ContractFileManager();
+
     }
 
     public void display() {
@@ -35,12 +42,31 @@ public class UserInterface {
                     "7) All Vehicles \n" +
                     "8) Add Vehicle \n" +
                     "9) Remove Vehicle \n" +
-                    "0) Exit");
+                    "0) Sell vehicle \n" +
+                    "X) Exit");
             char input = Utils.getCharInput();
 
             switch (input) {
+                case '1':
+                    getByPrice();
+                    break;
+                case '2':
+                    getByMakeModelRequest();
+                    break;
+                case '3':
+                    getByYearRequest();
+                    break;
+                case '4':
+                    getByColor();
+                    break;
+                case '5':
+                    getByMileage();
+                    break;
+                case '6':
+                    getByType();
+                    break;
                 case '7':
-                    displayAllVehicles();
+                   getAllVehicles();
                     break;
                 case '8':
                     addVehicleToCSV();
@@ -48,6 +74,11 @@ public class UserInterface {
                 case '9':
                     removeVehicleFromCSV();
                     break;
+                case '0':
+                    sellLeaseVehicle();
+                    break;
+                case 'X':
+                    System.exit(0);
             }
         }
     }
@@ -63,7 +94,7 @@ public class UserInterface {
         }
     }
 
-    private void getByPriceRequest() {
+    private void getByPrice() {
         // enter Price
         String minString = Utils.getStringInputCustom("Enter the min price: "); // Evaluate input to String for isEmpty
         double minPrice = Utils.getDoubleInput(minString); // Evaluate if amount is Empty.
@@ -82,13 +113,42 @@ public class UserInterface {
 
         // get Vehicle from Dealership
         ArrayList<Vehicle> vehicles = dealership.getVehiclesByMakeModel(make, model);
-
-
         displayVehicles(vehicles);
     }
 
-    private void displayAllVehicles() {
-        dealership.getAllVehicles();
+    public void getByYearRequest() {
+        int minYear = Utils.getIntInput("Enter minimum year: ");
+        int maxYear = Utils.getIntInput("Enter maximum year: ");
+
+        System.out.println("Vehicles by Year:");
+        displayVehicles(dealership.getVehiclesByYear(minYear, maxYear));
+    }
+
+    public void getByColor() {
+        String color = Utils.getStringInput("Enter color: ");
+
+        System.out.println("Vehicles by Color:");
+        displayVehicles(dealership.getVehiclesByColor(color));
+    }
+
+    public void getByMileage() {
+        int minMileage = Utils.getIntInput("Enter minimum mileage: ");
+        int maxMileage = Utils.getIntInput("Enter maximum mileage: ");
+
+        System.out.println("Vehicles by Mileage:");
+        displayVehicles(dealership.getVehiclesByMileage(minMileage, maxMileage));
+        System.out.println();
+    }
+
+    public void getByType() {
+        String vehicleType = Utils.getStringInput("Enter vehicle type: ");
+
+        System.out.println("Vehicles by Vehicle Type:");
+        displayVehicles(dealership.getVehiclesByType(vehicleType));
+    }
+
+    public void getAllVehicles() {
+        displayVehicles(dealership.getAllVehicles());
     }
 
     public void addVehicleToCSV() {
@@ -119,6 +179,30 @@ public class UserInterface {
             System.out.println("Vehicle removed successfully!");
         } else {
             System.out.println("Vehicle not found!");
+        }
+    }
+
+    public void sellLeaseVehicle(){
+        String date = LocalDate.now().toString();
+        int vin = Utils.getIntInput("Enter vehicle VIN: ");
+        String customerName = Utils.getStringInput("Enter customer name: " );
+        String customerEmail = Utils.getStringInput("Enter customer email: ");
+        String typeOfContract = Utils.getStringInput("Enter contract type (sell/lease): ");
+
+        Vehicle findVehicle = dealership.getVehiclesByVIN(vin);
+
+        if(findVehicle !=null){
+            if(typeOfContract.equals("sell")){
+                Contract salesContract = new SalesContract(date, customerName, customerEmail, findVehicle);
+                cfm.saveContract(salesContract);
+                dealership.removeVehicle(findVehicle);
+                dfm.saveDealershipToCSV(dealership);
+            }
+            // Else if typeOfContract equal lease
+            // ... new LeaseContract
+             else {
+                System.out.println("Please try again.");
+            }
         }
     }
 }
