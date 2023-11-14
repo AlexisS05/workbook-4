@@ -6,8 +6,6 @@ import java.io.*;
 
 public class DealershipFileManager {
 
-    private String fileName;
-
     public static Dealership getDealership() {
         // load and read file
         try {
@@ -34,7 +32,7 @@ public class DealershipFileManager {
         }
     }
 
-    public void saveDealershipToCSV(Dealership dealership) { // write dealership info, then vehicles
+    public void saveDealershipToCSV(Dealership dealership) { // write dealership info, then vehicles, updates csv
         String dealerName = dealership.getName();
         String address = dealership.getAddress();
         String phone = dealership.getPhone();
@@ -56,8 +54,7 @@ public class DealershipFileManager {
                 fileWriter.write(vehicleInfo);
             }
             fileWriter.close();
-
-            System.out.println("Dealership inventory saved to file: " + fileName);
+            System.out.println("Dealership inventory saved to file! " );
         } catch (IOException e) {
             System.err.println("Error saving dealership inventory");
         }
